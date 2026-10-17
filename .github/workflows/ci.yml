@@ -23,9 +23,7 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      # Bootstrap coverage dependencies for the calibration run. The final change
-      # restores --frozen-lockfile after committing the generated lockfile.
-      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       # The API and the dashboard import packages/core from its build output, so build first.
       - run: pnpm build
       - run: pnpm typecheck
@@ -34,8 +32,6 @@ jobs:
         run: pnpm --filter @concord/core test:coverage
       - name: API coverage
         run: pnpm --filter @concord/api test:coverage
-      - name: Show generated coverage lockfile changes
-        run: git diff -- pnpm-lock.yaml
       - name: Upload lcov reports
         uses: actions/upload-artifact@v4
         with:
